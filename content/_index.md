@@ -5,7 +5,7 @@ action_type: text
 description: I am a data scientist and researcher pursuing a PhD at the University of Antwerp.
 image_left: false
 images:
-- img/about.png
+- img/head.png
 show_action_link: true
 show_social_links: true
 # subtitle: A Hugo theme you'll want to hang out with
