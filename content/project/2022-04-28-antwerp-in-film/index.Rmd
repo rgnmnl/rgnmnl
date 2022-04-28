@@ -12,6 +12,8 @@ tags:
 excerpt: A photo series of my favorite things in my neighborhood.
 ---
 
+I recently bought a film camera from Mori Film Lab in Brussels and I bought a Lomography film sampler to try out. I was mid-roll (Berlin Kino 400 film) when I was challenged to take photos of some of my favorite things in my neighborhood and I am pleasantly surprised with how these turned out.
+
 ```{r, echo = FALSE}
 library(pixture)
 
