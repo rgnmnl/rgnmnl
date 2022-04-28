@@ -1,0 +1,21 @@
+---
+title: Antwerp in Film
+author: Regina Manansala
+date: '2022-04-28'
+slug: []
+categories:
+  - photos
+tags:
+  - life
+  - photos
+  - film
+excerpt: A photo series of my favorite things in my neighborhood.
+---
+
+```{r, echo = FALSE}
+library(pixture)
+
+paths <- list.files(".", pattern = ".JPG", full.names = TRUE)
+
+pixgallery(paths)
+```

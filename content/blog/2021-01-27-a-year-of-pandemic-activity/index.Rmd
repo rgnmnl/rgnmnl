@@ -1,0 +1,227 @@
+---
+title: A Year of Pandemic Activity
+author: Regina Manansala
+date: '2021-01-27'
+slug: a-year-of-pandemic-activity
+categories:
+  - blog
+  - photos
+  - r
+tags:
+  - r
+  - analysis
+description: Analyzing my own Apple Watch data.
+excerpt: ""
+---
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(warning = F, message = F, error = F)
+```
+
+
+```{r, echo=FALSE}
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(ggplot2)
+library(circlize)
+library(kableExtra)
+
+# Source functions
+load(file = '../../../static/post/watch_vis.rda')
+```
+
+I’ve had an Apple Watch for a while now and I bought it largely because I wanted to start tracking my activity – and to, eventually, analyze this data. In order to do the latter, though, I needed to have owned, worn, and religiously tracked activities using my watch for at least 1 whole calendar year. Now in the summer of 2020, I had some down time and so I downloaded my watch data and started messing around with it. I made plots, but the missing data for the remaining 4 months were really bothering me, so I waited and now, I have 2 full years’ worth of data and one just happened to be during a global pandemic!
+
+<h4>2020 – An overview of a year of anxiety driven activities</h4>
+
+```{r dt, include=FALSE}
+dt <- matrix(ncol = 2, nrow = 3)
+rownames(dt) <- c("Total Energy Burned", "Total Time Spent Exercising", "Total Standing Hours")
+colnames(dt) <- c("2019", "2020")
+
+### Total Energy Burned
+dt[1,2] <- sum(watch_2020_wide$TotalEnergy, na.rm = TRUE)
+dt[1,1] <- sum(watch_2019_wide$TotalEnergy, na.rm = TRUE)
+
+### Total Exercise Time
+dt[2,1] <- sum(watch_2019_wide$ExerciseTime, na.rm = TRUE)
+dt[2,2] <- sum(watch_2020_wide$ExerciseTime, na.rm = TRUE)
+
+### Total Stand Time
+dt[3,1] <- sum(watch_2019_wide$StandTimeHr, na.rm = TRUE)
+dt[3,2] <- sum(watch_2020_wide$StandTimeHr, na.rm = TRUE)
+```
+
+```{r dt_table, echo=FALSE}
+dt %>%
+  kableExtra::kbl() %>%
+  kableExtra::kable_styling()
+```
+
+Compared to 2019, my 2020 energy and exercise totals didn’t seem to dip too much. I can’t really compare the standing hours, because my 2019 total is missing date from January to October (presumably around the time I upgraded my watch).
+
+
+```{r da, include=FALSE}
+da <- matrix(ncol = 2, nrow = 3)
+rownames(da) <- c("Daily Average Energy Burned", "Daily Average Time Spent Exercising", "Daily Average Walk/Run Distance")
+colnames(da) <- c("2019", "2020")
+
+### Daily Average Energy Burned
+da[1,1] <- mean(watch_2019_wide$TotalEnergy, na.rm = TRUE)
+da[1,2] <- mean(watch_2020_wide$TotalEnergy, na.rm = TRUE)
+
+### Daily Average Exercise Time
+da[2,1] <- mean(watch_2019_wide$ExerciseTime, na.rm = TRUE)
+da[2,2] <- mean(watch_2020_wide$ExerciseTime, na.rm = TRUE)
+
+### Daily Average Walk/Run Distance
+da[3,1] <- mean(watch_2019_wide$WalkRunDistance, na.rm = TRUE)
+da[3,2] <- mean(watch_2020_wide$WalkRunDistance, na.rm = TRUE)
+```
+
+```{r da_table, echo=FALSE}
+da %>%
+  round(., 2) %>%
+  kbl() %>%
+  kable_styling()
+```
+
+I also expected a dip in my energy, exercise, and distance averages. The only significant change is in my daily walk/run distance (I ran a t-test to check), which makes sense because I stopped walking to work for 9.5 months. I really tried to make walking a daily habit, though. How else was I supposed to listen to all my podcasts?
+
+Also, I focused on longer and slow-moving exercises that were kinder to my body. I’m getting old and the DOMS hit different nowadays.
+
+```{r hr, include=FALSE}
+hr <- matrix(ncol = 2, nrow = 4)
+rownames(hr) <- c("Average Minimum Heart Rate", "Average Daily Heart Rate", "Average Maximum Heart Rate", "Daily Heart Rate SD")
+colnames(hr) <- c("2019", "2020")
+
+### Min
+hr[1,1] <- mean(heartrate$min_2019, na.rm = TRUE)
+hr[1,2] <- mean(heartrate$min_2020, na.rm = TRUE)
+
+### Mean
+hr[2,1] <- mean(heartrate$mean_2019, na.rm = TRUE)
+hr[2,2] <- mean(heartrate$mean_2020, na.rm = TRUE)
+
+### Max
+hr[3,1] <- mean(heartrate$max_2019, na.rm = TRUE)
+hr[3,2] <- mean(heartrate$max_2020, na.rm = TRUE)
+
+### SD
+hr[4,1] <- mean(heartrate$sd_2019, na.rm = TRUE)
+hr[4,2] <- mean(heartrate$sd_2020, na.rm = TRUE)
+```
+
+```{r hr_table, echo=FALSE}
+hr %>%
+  round(., 2) %>%
+  kbl() %>%
+  kable_styling()
+```
+
+I really wanted to see how much my heart rate varied between the two years. I thought my resting heart rate would increase since I was doing a lot less cardio and was generally more stressed. A few years back (when I drank more and before I started working out), I had a pre-hypertension scare and had to wear a heart rate monitor for an entire day, so a median resting heart rate sub-60 has been nice to see as I hit my 30s (2019: 54 BPM; 2020: 56 BPM).
+
+```{r steps, echo=FALSE}
+stepcolormonth <- c("#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f")
+
+steps <- watch_2020_wide %>% group_by(month) %>%
+  ggplot(.) +
+  geom_col(aes(x=date, y=StepCount, fill = month), size = 0.5) +
+  geom_smooth(aes(x=date, y=StepCount), size = 0.7, colour = "#8d2f57", se = FALSE) + 
+  scale_x_date(date_labels = "%b %y", date_breaks = "1 month") +
+  scale_fill_manual(values = stepcolormonth, guide = FALSE) +
+  xlab("Month") + 
+  ylab("Total Daily Steps") +
+  ggtitle("My daily step total in 2020") +
+  theme_bw() +
+  theme(plot.title = element_text(color="#8d2f57", size=14, face="bold.italic"),
+        axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+print(steps)
+```
+
+This was a fun one to make using ggplot2. I initially thought it would be fun to just plot a bar chart of my daily average step count (which is very highly correlated with my walk/run distance, of course), but you can barely recognize the trend, so I added a loess curve.
+
+My step count is generally pretty low during the winter months and the gradual decline from January was probably because I 1) hurt my hand in February, 2) switched to remote working in March, and 3) sprained my groin late May from running too much to compensate for the gym workouts I missed. (I thought I had a sports hernia, so I saw a PT and she said: “pain reliever, ice, rest, and stretch”. Ok!)
+
+The increase in July was when I started walking a lot more until I gradually built up to running again (shorter runs and less frequent). In the bar plot, you can clearly see the 10-day period in October when I had quarantine in Belgium and the gradual increase later in the year is probably because I was in Belgium. I generally walk more there because we live in the city, I can’t drive manual, and I’m trying to avoid using public transportation right now.
+
+In 2020, I had 173 days where I exceeded my 10,000-step goal, which is a lot less than my 259 days in 2019. Gotta work on that this year!
+
+```{r ex, echo=FALSE}
+stepcolormonth <- c("#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f", "#79d1dd", "#fcbe4f")
+
+ex <- watch_2020_wide %>% group_by(month) %>%
+  ggplot(.) + 
+  geom_col(aes(x=date, y=ExerciseTime, fill = month), size = 0.5) +
+  geom_smooth(aes(x=date, y=ExerciseTime), size = 0.7, colour = "#8d2f57", se = FALSE) + 
+  scale_x_date(date_labels = "%b %y", date_breaks = "1 month") +
+  scale_fill_manual(values = stepcolormonth, guide = FALSE) +
+  xlab("Month") + 
+  ylab("Total Daily Exercise Time (in minutes)") +
+  ggtitle("How much of my day was spent exercising in 2020") +
+  theme_bw() +
+  theme(plot.title = element_text(color="#8d2f57", size=14, face="bold.italic"),
+        axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+print(ex)
+
+```
+
+I thought I’d make the same plot for my total daily exercise time. Honestly, no groundbreaking discoveries there. I exercised just a little more over the summer, but I also don’t “record” walks when I’m traveling so those steps later in the year weren’t counted as “exercise”. When I’m not in Milwaukee, walking seems less like a chore. 
+
+<h4>A tiring Thanksgiving</h4>
+
+```{r nov26, include=FALSE}
+Nov26 <- subset(watch_2020_wide, date == "2020-11-26") %>% 
+  select(., c("date", "ExerciseTime", "StandTimeHr", "WalkRunDistance", "StepCount", "TotalEnergy")) %>%
+  column_to_rownames(., "date")
+```
+
+```{r nov26_table, echo=FALSE}
+Nov26 %>%
+  round(., 2) %>%
+  kbl() %>%
+  kable_styling()
+```
+
+My most active day of 2020 was Thanksgiving Day, which we spent walking around all of Brussels. I wanted to see the Christmas tree in the Grote Markt and to get some Pasteis de Nata from a place in Saint-Gilles. The city was fairly empty, so it was both eerie and cool to see. Here’s a photo!
+
+![](/img/pandemic-activity/brussels.jpg){ width=75% }
+
+<h4>An activity I wish I did more...</h4>
+
+```{r cyc, echo=FALSE}
+cyc <- watch_2020_wide %>% group_by(month) %>%
+  ggplot(.) + 
+  geom_col(aes(x=date, y=Cycling), size = 0.5, fill = "#79d1dd") +
+  geom_smooth(aes(x=date, y=Cycling), size = 0.7, colour = "#8d2f57", se = FALSE) + 
+  scale_x_date(date_labels = "%b %y", date_breaks = "1 month") +
+  xlab("Month") + 
+  ylab("Total Cycling Distance (in miles)") +
+  ggtitle("How much I cycled in 2020 (not much, but more than usual)") +
+  theme_bw() +
+  theme(plot.title = element_text(color="#8d2f57", size=14, face="bold.italic"),
+        axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+print(cyc)
+```
+
+With the shift to more outdoor activities, I picked up my bike and rode more. But not a lot. I went on 19 rides last year compared to the 5 rides I did in 2019. My distances significantly increased, but there’s only so far I could go around here without getting too bored too quickly.
+
+<h4>But this is all just for fun…</h4>
+
+Of course, much of this blog post is anecdotal. I can’t be entirely certain a change in my resting HR can be directly attributed to one thing or if my heart rate even really increased at all <i>(read “Causal Inference” by Miguel A. Hernán, James M. Robins</i>). I haven’t been very good at recalibrating my watch so again, not sure if these numbers are 100% accurate. Additionally, there may be discrepancies in some of the data collected, because I have used other apps such as Strava, Nike Run, Peloton, which probably collect data differently.
+
+One thing I am certain of is that I will not be making big health related decisions based on what my watch tells me. My wrist will just feel funny if I don't have it on.

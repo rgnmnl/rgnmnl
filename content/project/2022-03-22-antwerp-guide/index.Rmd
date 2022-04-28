@@ -1,0 +1,30 @@
+---
+title: "Antwerp Guide v1"
+author: "Regina Manansala"
+date: '2022-03-22'
+slug: antwerp-guide
+showonlyimage: true
+categories:
+  - project
+tags:
+  - app, shiny
+description: "My unofficial and incomplete guide to Antwerp - in progress"
+links:
+- icon: door-open
+  icon_pack: fas
+  name: website
+  url: https://manansa.shinyapps.io/antwerpen/
+- icon: github
+  icon_pack: fab
+  name: code
+  url: https://github.com/rgnmnl/antwerpen
+layout: single
+---
+
+<iframe height="800" width="100%" frameborder="no" src="https://manansa.shinyapps.io/antwerpen/"> </iframe>
+
+This is a Shiny web app I created for my friends and family traveling to Antwerp in November 2021. Travel restrictions were constantly changing at that time and I wanted to provide them with the resources necessary for their trip.
+
+The app has not been updated since the end of 2021. I'm trying to think of creative uses for it for the future, but for now, I enjoy having it as an artifact of its time.
+
+<!-- Visit app <a href = "https://manansa.shinyapps.io/antwerpen/"><b>here</b></a> -->

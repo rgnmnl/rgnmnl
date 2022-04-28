@@ -1,0 +1,171 @@
+---
+title: I can't believe I listened to Momoland that much
+author: Regina Manansala
+date: '2021-03-15'
+image: "img/momoland/spotify.jpg"
+showonlyimage: true
+slug: i-can-t-believe-i-listened-to-momoland-that-much
+categories:
+  - blog
+tags:
+  - music
+description: My 2020 Spotify Wrapped explained
+excerpt: ""
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(warning = F, message = F, error = F)
+```
+
+```{r , echo = FALSE}
+library(lubridate)
+library(data.table)
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(rjson)
+
+# Source functions
+load(file = '../../../static/post/spotify_2021.rda')
+load(file = '../../../static/post/foreign.rda')
+load(file = '../../../static/post/morning_run.rda')
+load(file = '../../../static/post/trouwen.rda')
+load(file = '../../../static/post/liked_songs.rda')
+```
+
+At some point during quarantine last year, I found out that you could download a years worth of your Spotify data. Back then I only had 8 months worth of data for 2020, so again, I waited until 2021 to download the rest of it. And since 2021 began, I haven't found time to do this, until now.
+
+Last year, for my Spotify Wrapped, I found out that my top songs of 2020 had not one, but 2 (!!) Momoland songs! I thought my Spotify data could help me understand HOW that was possible, but alas, Spotify's data download is not as comprehensive as I expected. 
+
+I read somewhere that Spotify Wrapped only uses 10 months worth of data. If the data download is only good for some summary stats, I figured I could check if including the remaining 2 months makes any difference.
+
+<h4>Top 5 Artists of 2020</h4>
+
+In 2020, I listened to <b>1,227</b> unique artists and these are my top 5 artists based on number of plays. Pretty sure that didn't change with the added 2 months of data. However, if I listed my top 5 based on total hours listened, the last 2 would be replaced by podcasts - specifically "An Oral History of The Office" and "The Daily". I don't use Spotify as my primary podcast-playback platform, but it's definitely my back-up when I'm desperate for my dose of the Daily. I also rewatched all of the Office during quarantine so I just had to listen to Brian Baumgartner's podcast.
+
+```{r artist, include=FALSE}
+artistn <- streams_2020 %>%
+  group_by(artistName) %>%
+  summarise(., n = n(), msTotal = sum(msPlayed), secTotal = sum(secPlayed), minTotal = sum(minPlayed), hrTotal = sum(minPlayed)/60) %>%
+  arrange(., desc(n))
+```
+
+```{r artist_n, echo=FALSE}
+artistn %>%
+  select(., c("artistName", "n", "hrTotal")) %>%
+  head(., 5) %>%
+  kableExtra::kbl() %>%
+  kableExtra::kable_styling()
+```
+
+```{r artist_time, echo=FALSE}
+artistn %>%
+  select(., c("artistName", "n", "hrTotal")) %>%
+  top_n(., 5) %>%
+  kableExtra::kbl() %>%
+  kableExtra::kable_styling()
+```
+
+<h4>Top 5 Songs of 2020</h4>
+
+My top 5 tracks for ALL of 2020 (out of <b>2,589</b> unique tracks) based on listening time has no signs of Momoland. Instead, I have 3 Underworld songs, which makes sense because I was on a huge late-90s/early-2000s dance music kick in the latter half of the year.
+
+```{r track, include = FALSE}
+trackn <- streams_2020 %>%
+  group_by(trackName) %>%
+  summarise(., n = n(), msTotal = sum(msPlayed), secTotal = sum(secPlayed), minTotal = sum(minPlayed), hrTotal = sum(minPlayed)/60) %>%
+  arrange(., desc(n))
+```
+
+```{r track_time, echo=FALSE}
+trackn %>%
+  select(., c("trackName", "n", "hrTotal")) %>%
+  top_n(., 5) %>%
+  kableExtra::kbl() %>%
+  kableExtra::kable_styling()
+```
+
+If I sort my top tracks by number of plays, it tells quite a different story. The biggest difference between this and what was nicely presented in my Spotify Wrapped is the presence of, not one, but two (!!) white noise tracks. I use white noise a lot when I'm reading and I did read more than normal in 2020 (books, scientific papers, etc).
+
+```{r track_n, echo=FALSE}
+trackn %>%
+  select(., c("trackName", "n", "hrTotal")) %>%
+  head(., 5) %>%
+  kableExtra::kbl() %>%
+  kableExtra::kable_styling()
+```
+
+My Underworld songs also seem to have disappeared and the only explanation is that those Underworld tracks are 2-3x the length of these Dua Lipa and Momoland tracks. Just goes to show how I can easily alter this data to present different music tastes. But maybe not so vastly different, because regardless of genres, my song choices prove that I am a millenial desperately clinging on to my youth.
+
+<h4>Exploring Momoland</h4>
+
+When I saw my Spotify Wrapped, I was so confused because I really don't recall listening to Momoland that many times. I looked into my playlists and found Momoland in 4 playlists: "Foreign Language Dump", "Morning Run", "Trouwen", and "Liked Songs".
+
+Unfortunately, Spotify doesn't provide how many times you listened to playlists so I did some arbitrary calculation where I took each time I listened to a Momoland song and the 5 songs I listened to before and after and matched them with the songs in each playlist. I found that out of the 115 times I played Momoland, at least 47 of those were from my "Morning Run" playlist. It could be more, but I had a few instances where my subset of 11 songs matched with more than 1 playlist (these playlists lack variety, I KNOW).
+
+```{r momo, include = FALSE}
+
+momoland <- data.frame()
+for(i in which(streams_2020$artistName == "MOMOLAND")){
+  min_pos <- i - 5
+  max_pos <- i + 5
+  momoland <- rbind(momoland, streams_2020[min_pos:max_pos,])
+}
+
+
+myplaylists <- c("Foreign_Language_Dump", "Morning_Run", "Trouwen", "likedsongs")
+nplays <- subset(streams_2020[streams_2020$artistName == "MOMOLAND",]) %>%
+  mutate(., Foreign_Language_Dump = NA, Morning_Run = NA, Trouwen = NA, likedsongs = NA, )
+output_counter <- 0
+
+for(j in which(streams_2020$artistName == "MOMOLAND")){
+  output_counter <- output_counter + 1
+  min_pos <- j - 7
+  max_pos <- j + 7
+  test <- streams_2020[min_pos:max_pos,]
+  
+  for(i in 1:length(myplaylists)){
+    if(myplaylists[i] == "likedsongs"){
+      check <- get(myplaylists[i]) 
+      
+      nplays[output_counter, myplaylists[i]] <- length(which((test$artistName %in% check$artistName) & (test$trackName %in% check$trackName)))
+      
+      # print(length(which((test$artistName %in% check$artistName) & (test$trackName %in% check$trackName))))
+    } else {
+      check <- get(myplaylists[i]) %>% data.frame() %>%
+        rename(., trackName = X1, artistName = X2, albumName = X3)
+      
+      nplays[output_counter, myplaylists[i]] <- length(which((test$artistName %in% check$artistName) & (test$trackName %in% check$trackName)))
+      
+      # print(myplaylists[i])
+      # print(length(which((test$artistName %in% check$artistName) & (test$trackName %in% check$trackName))))
+    }
+  }
+}
+```
+
+Sure enough, when I plot these plays by month, there are peaks around the warmer, more running-friendly-weather months. And if you read my previous post about my year of pandemic activity, you'll see that I slowed down running in May due to a groin injury! Man, data is cool.
+
+```{r momo_plot, echo=FALSE}
+momoplot <- nplays %>%
+  mutate(., month = format(date, '%Y-%m')) %>%
+  group_by(month) %>%
+  summarise(., n = n()) %>%
+  ggplot(., aes(x = month, y = n)) + 
+  geom_col(size = 0.5, fill = "#d51c4b") +
+  xlab("Month") + 
+  ylab("Number of Plays") +
+  ggtitle("The Momoland play cycle") +
+  theme_bw() +
+  theme(plot.title = element_text(color="#8d2f57", size=14, face="bold.italic"),
+        axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+print(momoplot)
+```
+
+Anyway, here's a playlist for you to enjoy some Momoland.
+
+<center><iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1EM8r0Fn3KFIKz" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></center>
