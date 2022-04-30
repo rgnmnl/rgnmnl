@@ -19,5 +19,18 @@ library(pixture)
 
 paths <- list.files(".", pattern = ".JPG", full.names = TRUE)
 
-pixgallery(paths)
+pixgallery(paths,
+           caption=c(
+             "Very sleek COS store interior", 
+             "A diorama in the old shoe scrapers - there are a few spread out in the city", 
+             "Nives cafe - beautiful location and a nice place to sit on a sunny day", 
+             "Harmoniepark - the view from the Nives patio", 
+             "The Provinciehuis", 
+             "Cheese", 
+             "The Royal Museum of Fine Arts - great place to sit, drink, and peoplewatch", 
+             "Rush Rush Coffee - some of the best in the city", 
+             "Hunting for good vinyl to add to the collection", 
+             "The Kaaien - the typical running view", 
+             "Drinking by the Kaaien - the cheap alternative to bars",
+             "A little front lawn in Cogels-Osylei"))
 ```
