@@ -1,0 +1,19 @@
+---
+title: A makeover!
+author: Package Build
+date: '2022-05-02'
+slug: []
+categories:
+  - blog
+tags:
+  - blog
+excerpt: Bringing European sensibilities into the blog.
+---
+
+I've made quite a few changes since I published this blog a year and a half ago. I have moved countries, switched jobs, and I am enjoying new hobbies so there are a few more things I want to start sharing here and the old layout was making it quite difficult customize.
+
+If you hadn't previously visited this page, my old theme was the <a href="https://github.com/kishaningithub/hugo-creative-portfolio-theme">Hugo Creative Portfolio theme</a>. I picked it because I didn't want to go too Academic, but I found myself spending more time reading up on new packages and getting them to work with the theme than actually posting anything.
+
+Thankfully one of the resources I used for my old theme created my new one - <a href="https://hugo-apero-docs.netlify.app/">Hugo Apero</a>! The vignettes are so helpful and the theme is so user friendly. I didn't have any issues moving my old posts over and I'm so overwhelmed with all the layout options I can play with. I also moved my blog from Github pages to Netlify and it is amazing so quick and easy it is. I don't have to push files to 2 different Github repos.
+
+With most of the blog upkeep streamlined, I'm hoping to post more content this year than I did the previous years.
