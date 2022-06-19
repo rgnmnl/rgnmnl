@@ -52,7 +52,7 @@ pixgallery(paths[4:6],
            )
 ```
 
-A beverage: <i>A beer from Cafe Ernest. This is when I learned that my little point-and-shoot is not the best camera for food pics. Funny story - I got the stomach flu than night. Not fun.</i>
+A beverage: <i>A beer from Cafe Ernest. This is when I learned that my little point-and-shoot is not the best camera for food pics. Funny story - I got the stomach flu that night. Not fun.</i>
 <br>Mornings: <i>Arriving in Brussels for a day trip.</i>
 <br>Evenings: <i>An evening by the Vismarkt in Brussels.</i>
 
