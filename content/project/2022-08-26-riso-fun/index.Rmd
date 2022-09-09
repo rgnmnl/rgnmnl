@@ -1,6 +1,6 @@
 ---
 title: Riso Fun
-author: Package Build
+author: Regina Manansala
 date: '2022-08-26'
 slug: []
 categories:
