@@ -10,7 +10,7 @@ audio_link_label: # leave blank to exclude
 link_list_label: # bookmarks, elsewhere, etc.
 link_list:
 - name: CV
-  url: https://drive.google.com/file/d/1cY1a5VjAFzx_CfkB8ykA4mbQ1NsrsJmL/view?usp=sharing
+  url: https://drive.google.com/file/d/1KnZiR3A9OGfgaFZCE9zijibo9EO-Yty9/view?usp=drive_link
 ---
 
 ** index doesn't contain a body, just front matter above.
