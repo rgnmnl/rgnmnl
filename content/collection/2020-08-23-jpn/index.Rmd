@@ -4,7 +4,7 @@ categories:
 - blog
 date: "2020-08-23"
 draft: false
-layout: single
+# layout: single
 subtitle: Photobook - November 2018
 title: Japan
 excerpt: ""
