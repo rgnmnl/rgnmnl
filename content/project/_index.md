@@ -13,13 +13,12 @@ cascade:
     text_link_url: ""
     text_series_label: Outline
     title: Create a Collection
-description: "Sometimes you want a souped-up series- a bundle of related pages \nmeant
-  to be read in sequence. This section is like a blog series, \nminus the blog.\n"
-layout: list-grid
+description: "A showcase of creative, non-photography projects."
+layout: list-series
 show_author_byline: false
 show_post_date: false
 show_post_thumbnail: true
 subtitle: 
-thumbnail_left: false
+thumbnail_left: true
 title: Projects
 ---

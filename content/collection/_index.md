@@ -1,12 +1,11 @@
 ---
 author: Regina Manansala
 cascade:
-  layout: single-series
   show_author_byline: false
   show_comments: false
   show_post_date: true
   sidebar:
-    show_sidebar_adunit: true
+    show_sidebar_adunit: false
     text_link_label: View all projects
     text_link_url: /project/
 description: "A showcase of travel photos, photography challenges and experiments."
