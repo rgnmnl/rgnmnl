@@ -100,7 +100,7 @@ enableEmoji = true
   [[params.social]]
       icon      = "twitter" # icon name without the 'fa-'
       icon_pack = "fab"
-      url       = "https://twitter.com/rm_mph"
+      url       = "https://twitter.com/rgnmnsl"
   #[[params.social]]
   #    icon      = "impactstory" # icon name without the 'fa-'
   #    icon_pack = "ai"
