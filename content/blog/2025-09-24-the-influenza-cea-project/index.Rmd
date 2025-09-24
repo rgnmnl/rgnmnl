@@ -1,0 +1,26 @@
+---
+title: The Influenza Cost-Effectiveness Project
+author: Package Build
+date: '2025-09-24'
+slug: the-influenza-cea-project
+categories:
+  - blog
+tags:
+  - analysis
+  - app, shiny
+  - phd
+  - r
+description: First chapter of the PhD thesis
+---
+
+The first component of my PhD thesis was published in 'Epidemics' in early 2025. You can find the abstract below and access the full text <a href = "https://doi.org/10.1016/j.epidem.2025.100826">here</a>. The accompanying shiny app aggregating all results is available <a href = "https://manansa.shinyapps.io/Influenza_App/">here</a> or in the Projects link above.
+
+<u><i>Abstract</i></u>
+
+<i><b>Background</b></i>: Many European countries prioritize groups for annual influenza vaccination based on risk of severe disease and death. This has resulted in relatively high influenza vaccination coverage in older adults in Belgium. However, coverage is much lower in younger adults and negligible in children. Children and young adults are known to play a major role in the transmission dynamics of influenza. Thus, an important policy question is how influenza vaccines can be optimally allocated across age groups, taking indirect effects into account.
+
+<i><b>Methods</i></b>: We adapted a dynamic transmission model to reproduce influenza seasonality in Belgium comparing 6720 mutually exclusive vaccination options, including current practice. Vaccination options were defined by different combinations of coverage level changes in nine age groups. We performed an economic evaluation comparing all options from a healthcare payer perspective. Quality-adjusted life-years (QALYs) were the primary health outcome. We expressed parametric uncertainty using the Incremental Net Monetary Benefits (INMB) approach.
+
+<i><b>Results</i></b>: Of all the vaccination options considered, over 90 % dominated the current Belgian vaccination strategy in terms of cost-effectiveness. Children were estimated to contribute a substantial indirect protective effect to the overall population. The most cost-effective program increases vaccination coverage rates for children to 90 %, 50-64 years old to 48 %, and 65-74 years old to 75 %.
+
+<i><b>Discussion</i></b>: Overall QALY gains can be maximized in seasonal influenza vaccination programs at acceptable costs by achieving high vaccination coverage in childhood age groups. Programmatic and ethical concerns towards such an implementation in the Belgian context need to be separately considered.
