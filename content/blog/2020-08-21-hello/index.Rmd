@@ -1,6 +1,6 @@
 ---
 title: Finally! How I got my blog to work...
-author: Regina Manansala
+author: Regina
 date: '2020-08-21'
 # image: ""
 slug: hello
