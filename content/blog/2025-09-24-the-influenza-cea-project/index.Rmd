@@ -10,7 +10,7 @@ tags:
   - app, shiny
   - phd
   - r
-description: First chapter of the PhD thesis
+excerpt: First chapter of the PhD thesis
 ---
 
 The first component of my PhD thesis was published in 'Epidemics' in early 2025. You can find the abstract below and access the full text <a href = "https://doi.org/10.1016/j.epidem.2025.100826">here</a>. The accompanying shiny app aggregating all results is available <a href = "https://manansa.shinyapps.io/Influenza_App/">here</a> or in the Projects link above.
