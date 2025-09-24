@@ -8,7 +8,7 @@ categories:
   - project
 tags:
   - app, shiny
-description: "My unofficial and incomplete guide to Antwerp - in progress"
+excerpt: "My unofficial and incomplete guide to Antwerp (circa 2021)"
 links:
 - icon: door-open
   icon_pack: fas
