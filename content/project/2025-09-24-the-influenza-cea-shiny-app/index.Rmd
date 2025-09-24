@@ -12,7 +12,7 @@ tags:
   - r
 subtitle: ''
 excerpt: 'The cost-effectiveness results of 6,720 influenza cost-effectiveness scenarios'
-draft: yes
+draft: no
 series: ~
 layout: single
 links:
