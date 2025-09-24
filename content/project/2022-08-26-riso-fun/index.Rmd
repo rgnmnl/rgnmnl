@@ -1,6 +1,6 @@
 ---
 title: Riso Fun
-author: Regina Manansala
+author: Regina
 date: '2022-08-26'
 slug: []
 categories:
