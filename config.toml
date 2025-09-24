@@ -96,7 +96,7 @@ enableEmoji = true
   [[params.social]]
       icon      = "instagram" # icon name without the 'fa-'
       icon_pack = "fab"
-      url       = "https://www.instagram.com/reggggie"
+      url       = "https://www.instagram.com/reggiesviews"
   [[params.social]]
       icon      = "twitter" # icon name without the 'fa-'
       icon_pack = "fab"
